@@ -9,11 +9,19 @@ public class HandAnim : MonoBehaviour
   [SerializeField] InputDeviceCharacteristics controllerCharacteristics;
     [SerializeField] List<GameObject> controllerPrefab;
     [SerializeField] GameObject handModelPrefab;
+
+    //Canvas stuff to be moved to game controller 
+    [SerializeField] private GameObject menu;
+    private bool menuActive = false;
+
+
+    //End of canvas stuff
     [SerializeField] bool showController = false;
     private InputDevice targetDevice;
     private GameObject spawnedController;
     private GameObject spawnedHandModel;
     private Animator handAnimator;
+
 
     void Start()
     {
@@ -72,6 +80,14 @@ public class HandAnim : MonoBehaviour
         //targetDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButtonValue);
         //targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
         //targetDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 primary2dAxisValue);
+
+        targetDevice.TryGetFeatureValue(CommonUsages.menuButton, out bool menuButtonPushed);
+        if (menuButtonPushed)
+        {
+            menuActive = !menuActive;
+            menu.SetActive(menuActive);
+        }
+
         if (!targetDevice.isValid)
         {
             TryInitialize();
